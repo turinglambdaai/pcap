@@ -132,16 +132,20 @@ On top of raw packet data it offers dissection of Ethernet II (including
   A decoded UDP datagram, with the payload trimmed to the UDP length
   field.}
 
-@defproc[(decode-ethernet [bs bytes?]) ethernet-frame?]
+@defproc[(decode-ethernet [bs bytes?]) ethernet-frame?]{
+  Decodes one Ethernet II frame, skipping any VLAN tags.}
 
-@defproc[(decode-ipv4 [bs bytes?]) ipv4-header?]
+@defproc[(decode-ipv4 [bs bytes?]) ipv4-header?]{
+  Decodes one IPv4 header and its payload.}
 
-@defproc[(decode-ipv6 [bs bytes?]) ipv6-header?]
+@defproc[(decode-ipv6 [bs bytes?]) ipv6-header?]{
+  Decodes one IPv6 fixed header and its payload.}
 
-@defproc[(decode-tcp [bs bytes?]) tcp-header?]
+@defproc[(decode-tcp [bs bytes?]) tcp-header?]{
+  Decodes one TCP header and its payload.}
 
 @defproc[(decode-udp [bs bytes?]) udp-header?]{
-  Decoders for a single layer.  Each raises @racket[exn:fail] when the
+  Decodes one UDP header and its payload.  Each raises @racket[exn:fail] when the
   input is shorter than the corresponding minimum header or carries a
   malformed length or version field.  For example:
 
