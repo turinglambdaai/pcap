@@ -29,7 +29,7 @@ On top of raw packet data it offers dissection of Ethernet II (including
      @item{@tt{d4 c3 b2 a1} --- little-endian, microseconds}
      @item{@tt{a1 b2 3c 4d} --- big-endian, nanoseconds}
      @item{@tt{4d 3c b2 a1} --- little-endian, nanoseconds}]}
- @item{@tech{pcapng} files are @bold{not} supported.  Feeding a pcapng file
+ @item{@deftech{pcapng} files are @bold{not} supported.  Feeding a pcapng file
    to any reader in this package raises @racket[exn:fail] with a
    ``bad magic number'' message.}
  @item{Checksums are not validated.  IPv6 extension headers are not parsed:
