@@ -1,5 +1,7 @@
 # pcap
 
+**English** · [中文](README.zh-CN.md)
+
 [![CI](https://github.com/turinglambdaai/pcap/actions/workflows/ci.yml/badge.svg)](https://github.com/turinglambdaai/pcap/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A pure-Racket reader for classic pcap capture files (the libpcap/tcpdump format), with dissection of Ethernet II (including 802.1Q/802.1ad VLAN tags), IPv4, IPv6 (header only), TCP, and UDP. No FFI, no system dependencies — only `base`.
