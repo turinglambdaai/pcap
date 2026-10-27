@@ -73,7 +73,7 @@ raco pkg install pcap
 raco pkg install --auto --link "$(pwd)"
 raco test -p pcap
 racket examples/quickstart.rkt
-raco setup -l pcap --check-pkg-deps
+raco setup --check-pkg-deps -l pcap
 ```
 
 CI 在 Linux、macOS、Windows 上执行以上检查。反馈时请提供合成的
