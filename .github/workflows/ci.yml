@@ -22,4 +22,4 @@ jobs:
       - name: Verify documented synthetic capture
         run: racket examples/quickstart.rkt
       - name: Build Scribble manual and check package dependencies
-        run: raco setup -l pcap --check-pkg-deps
+        run: raco setup --check-pkg-deps -l pcap
