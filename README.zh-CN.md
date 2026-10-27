@@ -16,25 +16,28 @@ raco pkg install pcap
 
 ## 示例
 
+下面的示例在内存中解析**合成**的经典 pcap 文件，不需要抓包权限、
+外部文件或真实网卡。
+
 ```racket
+#lang racket/base
 (require pcap)
-
-;; Read every packet from a capture file, in capture order.
-(define pkts (pcap-read-file "capture.pcap"))
-(define pkt (first pkts))
-
-;; Timestamps are exact rational seconds; data holds the captured bytes.
-(packet-timestamp pkt)   ; e.g. 1700000000+1/2
-(packet-orig-len pkt)    ; original wire length (incl_len may be shorter: snaplen)
-
-;; Dissect into a nested Ethernet -> IPv4 -> TCP structure.
-(define eth (decode-packet pkt))
-(ethernet-frame-src eth)                 ; "aa:bb:cc:dd:ee:ff"
-(define ip (ethernet-frame-payload eth)) ; ipv4-header?
-(ipv4-header-src ip)                     ; "192.168.1.1"
-(define tcp (ipv4-header-payload ip))    ; tcp-header?
-(tcp-header-dst-port tcp)                ; 443
+;; One synthetic Ethernet packet in a classic pcap container.
+(define capture
+  (bytes-append
+   (bytes #xa1 #xb2 #xc3 #xd4 0 2 0 4 0 0 0 0 0 0 0 0
+          0 0 #xff #xff 0 0 0 1)
+   (bytes 0 0 0 1 0 0 0 0 0 0 0 16 0 0 0 16)
+   (bytes #xaa #xbb #xcc #xdd #xee #xff
+          #x11 #x22 #x33 #x44 #x55 #x66 #x88 #xb5 #xde #xad)))
+(define pkt (car (pcap-read-bytes capture)))
+(packet-timestamp pkt)                    ; => 1 (exact seconds)
+(ethernet-frame-src (decode-packet pkt))  ; => "11:22:33:44:55:66"
 ```
+
+读取你自己的经典 pcap 文件可使用 `(pcap-read-file "capture.pcap")`。
+[可执行入门示例](examples/quickstart.rkt)还会断言数据包数量、时间戳、
+原始长度、EtherType 和载荷解码结果。
 
 ## 范围
 
@@ -59,6 +62,23 @@ raco pkg install pcap
 
 [参考手册](pcap/scribblings/pcap.scrbl)是包的一部分；安装后用
 `raco docs pcap` 阅读。
+
+## API 文档与开发
+
+[权威 Scribble API 手册](pcap/scribblings/pcap.scrbl)定义读取器契约、
+协议解析、错误行为及不支持的 pcapng 格式。现有测试覆盖四种 magic、
+截断及损坏输入。在安装 Racket 后，从仓库根目录运行：
+
+```sh
+raco pkg install --auto --link "$(pwd)"
+raco test -p pcap
+racket examples/quickstart.rkt
+raco setup -l pcap --check-pkg-deps
+```
+
+CI 在 Linux、macOS、Windows 上执行以上检查。反馈时请提供合成的
+脱敏最小样例和 Racket 版本，通过
+[GitHub Issues](https://github.com/turinglambdaai/pcap/issues) 提交。
 
 ## 许可证
 
