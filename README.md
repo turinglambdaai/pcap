@@ -65,7 +65,7 @@ From the repository root (Racket installed):
 raco pkg install --auto --link "$(pwd)"
 raco test -p pcap
 racket examples/quickstart.rkt
-raco setup -l pcap --check-pkg-deps
+raco setup --check-pkg-deps -l pcap
 ```
 
 CI checks these steps on Linux, macOS and Windows. For issues, include a
