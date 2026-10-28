@@ -14,25 +14,28 @@ raco pkg install pcap
 
 ## Example
 
+This self-contained example parses a **synthetic** classic pcap capture in
+memory; it requires no network privileges, external capture file or hardware.
+
 ```racket
+#lang racket/base
 (require pcap)
-
-;; Read every packet from a capture file, in capture order.
-(define pkts (pcap-read-file "capture.pcap"))
-(define pkt (first pkts))
-
-;; Timestamps are exact rational seconds; data holds the captured bytes.
-(packet-timestamp pkt)   ; e.g. 1700000000+1/2
-(packet-orig-len pkt)    ; original wire length (incl_len may be shorter: snaplen)
-
-;; Dissect into a nested Ethernet -> IPv4 -> TCP structure.
-(define eth (decode-packet pkt))
-(ethernet-frame-src eth)                 ; "aa:bb:cc:dd:ee:ff"
-(define ip (ethernet-frame-payload eth)) ; ipv4-header?
-(ipv4-header-src ip)                     ; "192.168.1.1"
-(define tcp (ipv4-header-payload ip))    ; tcp-header?
-(tcp-header-dst-port tcp)                ; 443
+;; One synthetic Ethernet packet in a classic pcap container.
+(define capture
+  (bytes-append
+   (bytes #xa1 #xb2 #xc3 #xd4 0 2 0 4 0 0 0 0 0 0 0 0
+          0 0 #xff #xff 0 0 0 1)
+   (bytes 0 0 0 1 0 0 0 0 0 0 0 16 0 0 0 16)
+   (bytes #xaa #xbb #xcc #xdd #xee #xff
+          #x11 #x22 #x33 #x44 #x55 #x66 #x88 #xb5 #xde #xad)))
+(define pkt (car (pcap-read-bytes capture)))
+(packet-timestamp pkt)                    ; => 1 (exact seconds)
+(ethernet-frame-src (decode-packet pkt))  ; => "11:22:33:44:55:66"
 ```
+
+To read your own classic capture, use `(pcap-read-file "capture.pcap")`.
+The checked-in [executable quickstart](examples/quickstart.rkt) asserts the
+packet count, timestamp, original length, EtherType and decoded payload.
 
 ## Scope
 
@@ -50,6 +53,24 @@ raco pkg install pcap
 - Dissection covers Ethernet II (802.1Q/802.1ad VLAN tags, including QinQ), IPv4 (with options), the fixed IPv6 header (extension headers are not parsed), TCP, and UDP. Checksums are not validated.
 
 The [reference manual](pcap/scribblings/pcap.scrbl) is part of the package; after installing, read it with `raco docs pcap`.
+
+## API and development
+
+The [Scribble API manual](pcap/scribblings/pcap.scrbl) is authoritative for
+reader contracts, dissection, error behavior and unsupported pcapng. The
+unit suite covers four magic variants, truncation and malformed inputs.
+From the repository root (Racket installed):
+
+```sh
+raco pkg install --auto --link "$(pwd)"
+raco test -p pcap
+racket examples/quickstart.rkt
+raco setup --check-pkg-deps -l pcap
+```
+
+CI checks these steps on Linux, macOS and Windows. For issues, include a
+synthetic, non-sensitive reproducer and your Racket version at
+[GitHub Issues](https://github.com/turinglambdaai/pcap/issues).
 
 ## License
 

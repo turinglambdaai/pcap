@@ -19,3 +19,7 @@ jobs:
         run: raco pkg install --auto --link "$(pwd)"
       - name: Run tests
         run: raco test -p pcap
+      - name: Verify documented synthetic capture
+        run: racket examples/quickstart.rkt
+      - name: Build Scribble manual and check package dependencies
+        run: raco setup --check-pkg-deps -l pcap
