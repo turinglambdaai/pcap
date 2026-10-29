@@ -2,7 +2,7 @@
 
 [English](README.md) · **中文**
 
-[![CI](https://github.com/turinglambdaai/pcap/actions/workflows/ci.yml/badge.svg)](https://github.com/turinglambdaai/pcap/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/turlamai/pcap/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/pcap/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 一个纯 Racket 的经典 pcap 抓包文件（libpcap/tcpdump 格式）读取器，可解析
 Ethernet II（含 802.1Q/802.1ad VLAN 标签）、IPv4、IPv6（仅固定头）、TCP
@@ -78,7 +78,7 @@ raco setup --check-pkg-deps -l pcap
 
 CI 在 Linux、macOS、Windows 上执行以上检查。反馈时请提供合成的
 脱敏最小样例和 Racket 版本，通过
-[GitHub Issues](https://github.com/turinglambdaai/pcap/issues) 提交。
+[GitHub Issues](https://github.com/turlamai/pcap/issues) 提交。
 
 ## 许可证
 
