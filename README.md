@@ -2,7 +2,7 @@
 
 **English** · [中文](README.zh-CN.md)
 
-[![CI](https://github.com/turinglambdaai/pcap/actions/workflows/ci.yml/badge.svg)](https://github.com/turinglambdaai/pcap/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![CI](https://github.com/turlamai/pcap/actions/workflows/ci.yml/badge.svg)](https://github.com/turlamai/pcap/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 A pure-Racket reader for classic pcap capture files (the libpcap/tcpdump format), with dissection of Ethernet II (including 802.1Q/802.1ad VLAN tags), IPv4, IPv6 (header only), TCP, and UDP. No FFI, no system dependencies — only `base`.
 
@@ -70,7 +70,7 @@ raco setup --check-pkg-deps -l pcap
 
 CI checks these steps on Linux, macOS and Windows. For issues, include a
 synthetic, non-sensitive reproducer and your Racket version at
-[GitHub Issues](https://github.com/turinglambdaai/pcap/issues).
+[GitHub Issues](https://github.com/turlamai/pcap/issues).
 
 ## License
 
